@@ -13,7 +13,7 @@ const queries = {
   nested: {
     university: async teaching => await getChildEntries(teaching)
   },
-  getTeaching: async () => await getAllEntries(identifier)
+  getTeaching: async (root, args) => await getAllEntries(identifier, args)
 };
 
 const mutations = {

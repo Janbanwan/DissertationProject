@@ -53,11 +53,11 @@ type University {
 }
 
 type Query {
-  getUniversities: [University]
-  getTeaching: [Teaching]
-  getResearch: [Research]
-  getInternationality: [Internationality]
-  getFinances: [Finance]
+  getUniversities(search: Int): [University]
+  getTeaching(search: Int): [Teaching]
+  getResearch(search: Int): [Research]
+  getInternationality(search: Int): [Internationality]
+  getFinances(search: Int): [Finance]
 }
 
 input UniversityInput {

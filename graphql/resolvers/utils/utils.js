@@ -72,8 +72,12 @@ async function deleteEntry(identifier, argsid) {
     });
 }
 
-async function getAllEntries(identifier) {
-  return await db.query(`select * from ${identifier}`).then(res => {
+async function getAllEntries(identifier, args) {
+  const queryString =
+    args.search === undefined
+      ? `select * from ${identifier}`
+      : `select * from ${identifier} where ${identifier}_id = ${args.search}`;
+  return await db.query(queryString).then(res => {
     return res.rows;
   });
 }

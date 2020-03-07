@@ -14,7 +14,8 @@ const queries = {
     university: async internationality =>
       await getChildEntries(internationality)
   },
-  getInternationality: async () => await getAllEntries(identifier)
+  getInternationality: async (root, args) =>
+    await getAllEntries(identifier, args)
 };
 
 const mutations = {
