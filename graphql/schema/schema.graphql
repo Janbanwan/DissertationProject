@@ -1,0 +1,120 @@
+type Finance {
+  finances_id: Int
+  university_id: Int
+  private_investments: Float
+  government_funding: Float
+  institutional_income: Float
+  university: University
+}
+
+type Internationality {
+  internationality_id: Int
+  university_id: Int
+  international_students: Float
+  international_staff: Float
+  university: University
+}
+
+type Research {
+  research_id: Int
+  university_id: Int
+  research_income: Float
+  research_grants: Int
+  research_ratings: Float
+  number_of_citations: Int
+  number_of_publications: Int
+  university: University
+}
+
+type Teaching {
+  teaching_id: Int
+  university_id: Int
+  student_satisfaction: Float
+  number_of_students: Int
+  number_of_undergrads: Int
+  number_of_postgrads: Int
+  number_of_courses: Int
+  passrate: Float
+  students_employed: Float
+  first_received: Float
+  teacher_per_student: Float
+  university: University
+}
+
+type University {
+  university_id: Int
+  university_name: String
+  founding_date: String
+  country: String
+  teaching: Teaching
+  internationality: Internationality
+  research: Research
+  finance: Finance
+}
+
+type Query {
+  getUniversities: [University]
+  getTeaching: [Teaching]
+  getResearch: [Research]
+  getInternationality: [Internationality]
+  getFinances: [Finance]
+}
+
+input UniversityInput {
+  university_name: String
+  founding_date: String
+  country: String
+}
+
+input FinanceInput {
+  university_id: Int
+  private_investments: Float
+  government_funding: Float
+  institutional_income: Float
+}
+
+input InternationalityInput {
+  university_id: Int
+  international_students: Float
+  international_staff: Float
+}
+
+input TeachingInput {
+  university_id: Int
+  student_satisfaction: Float
+  number_of_students: Int
+  number_of_undergrads: Int
+  number_of_postgrads: Int
+  number_of_courses: Int
+  passrate: Float
+  students_employed: Float
+  first_received: Float
+  teacher_per_student: Float
+}
+
+input ResearchInput {
+  university_id: Int
+  research_income: Float
+  research_grants: Int
+  research_ratings: Float
+  number_of_citations: Int
+  number_of_publications: Int
+}
+
+type Mutation {
+  addUniversity(input: UniversityInput): String
+  updateUniversity(id: Int, input: UniversityInput): String
+  removeUniversity(id: Int): String
+  addFinances(input: FinanceInput): String
+  updateFinances(id: Int, input: FinanceInput): String
+  removeFinances(id: Int): String
+  addInternationality(input: InternationalityInput): String
+  updateInternationality(id: Int, input: InternationalityInput): String
+  removeInternationality(id: Int): String
+  addTeaching(input: TeachingInput): String
+  updateTeaching(id: Int, input: TeachingInput): String
+  removeTeaching(id: Int): String
+  addResearch(input: ResearchInput): String
+  updateResearch(id: Int, input: ResearchInput): String
+  removeResearch(id: Int): String
+}
