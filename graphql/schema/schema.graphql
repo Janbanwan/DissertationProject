@@ -4,6 +4,8 @@ type Finance {
   private_investments: Float
   government_funding: Float
   institutional_income: Float
+  section_score: Float
+  year: Int
   university: University
 }
 
@@ -12,6 +14,8 @@ type Internationality {
   university_id: Int
   international_students: Float
   international_staff: Float
+  section_score: Float
+  year: Int
   university: University
 }
 
@@ -23,6 +27,8 @@ type Research {
   research_ratings: Float
   number_of_citations: Int
   number_of_publications: Int
+  section_score: Float
+  year: Int
   university: University
 }
 
@@ -37,7 +43,9 @@ type Teaching {
   passrate: Float
   students_employed: Float
   first_received: Float
-  teacher_per_student: Float
+  section_score: Float
+  year: Int
+  student_per_teacher: Float
   university: University
 }
 
@@ -46,6 +54,9 @@ type University {
   university_name: String
   founding_date: String
   country: String
+  score_2018: Float
+  score_2019: Float
+  score_2020: Float
   teaching: Teaching
   internationality: Internationality
   research: Research
@@ -54,16 +65,19 @@ type University {
 
 type Query {
   getUniversities(search: Int): [University]
-  getTeaching(search: Int): [Teaching]
-  getResearch(search: Int): [Research]
-  getInternationality(search: Int): [Internationality]
-  getFinances(search: Int): [Finance]
+  getTeaching(search: Int, year: Int): [Teaching]
+  getResearch(search: Int, year: Int): [Research]
+  getInternationality(search: Int, year: Int): [Internationality]
+  getFinances(search: Int, year: Int): [Finance]
 }
 
 input UniversityInput {
   university_name: String
   founding_date: String
   country: String
+  score_2018: Float
+  score_2019: Float
+  score_2020: Float
 }
 
 input FinanceInput {
@@ -71,12 +85,16 @@ input FinanceInput {
   private_investments: Float
   government_funding: Float
   institutional_income: Float
+  section_score: Float
+  year: Int
 }
 
 input InternationalityInput {
   university_id: Int
   international_students: Float
   international_staff: Float
+  section_score: Float
+  year: Int
 }
 
 input TeachingInput {
@@ -90,6 +108,8 @@ input TeachingInput {
   students_employed: Float
   first_received: Float
   teacher_per_student: Float
+  section_score: Float
+  year: Int
 }
 
 input ResearchInput {
@@ -99,6 +119,8 @@ input ResearchInput {
   research_ratings: Float
   number_of_citations: Int
   number_of_publications: Int
+  section_score: Float
+  year: Int
 }
 
 type Mutation {

@@ -72,11 +72,26 @@ async function deleteEntry(identifier, argsid) {
     });
 }
 
+function getAllQueryString(identifier, args) {
+  if (args && args.search && args.year) {
+    console.log("asd");
+    return `select * from ${identifier} where ${identifier}_id = ${args.search} and year = ${args.year}`;
+  } else if (args && args.search) {
+    console.log("dasd");
+
+    return `select * from ${identifier} where ${identifier}_id = ${args.search}`;
+  } else if (args && args.year) {
+    console.log("wasd");
+
+    return `select * from ${identifier} where year = ${args.year}`;
+  }
+  console.log("ased");
+
+  return `select * from ${identifier}`;
+}
+
 async function getAllEntries(identifier, args) {
-  const queryString =
-    args.search === undefined
-      ? `select * from ${identifier}`
-      : `select * from ${identifier} where ${identifier}_id = ${args.search}`;
+  const queryString = getAllQueryString(identifier, args);
   return await db.query(queryString).then(res => {
     return res.rows;
   });
