@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import REST from "../querypage/REST";
-import { Choice } from "../choice/choice";
 import { GraphQl } from "../querypage/graphQl";
 
 const Wrapper = styled.div`
@@ -33,11 +32,8 @@ const ButtonContainer = styled.div`
 
 const ChoiceButton = styled.button`
   padding: 10px;
-  border-radius: 6px;
-  border: 1px solid;
-  border-color: #ff99ff;
-  width: 200px;
-  text-align: center;
+  border-radius: 15px;
+  width: 100px;
   background-color: #4d004d;
   color: white;
 `;
