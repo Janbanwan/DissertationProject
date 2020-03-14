@@ -1,18 +1,17 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { Choice } from "../choice/choice";
 import REST from "../querypage/REST";
+import { Choice } from "../choice/choice";
 import { GraphQl } from "../querypage/graphQl";
 
 const Wrapper = styled.div`
   font-family: Tahoma, Geneva, sans-serif;
-  flex-grow: 1;
 `;
 const HeaderContainer = styled.div`
   text-align: center;
-  padding-bottom: 20px;
-  margin-bottom: 20px;
-  border-bottom: 4px solid #4d004d;
+  padding-bottom: 5px;
+  margin-bottom: 5px;
+  border-bottom: 3px solid #4d004d;
 `;
 
 const BodyContainer = styled.div`
@@ -25,28 +24,47 @@ const Header = styled.h1`
   color: #4d004d;
 `;
 
+const ButtonContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  justify-content: space-around;
+`;
+
+const ChoiceButton = styled.button`
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid;
+  border-color: #ff99ff;
+  width: 200px;
+  text-align: center;
+  background-color: #4d004d;
+  color: white;
+`;
+
 const Para = styled.p``;
 
-function showBody(show) {
-  switch (show) {
+function showComponent(component) {
+  switch (component) {
     case "GraphQL":
       return <GraphQl title="GraphQL API" />;
     case "REST":
       return <REST title="REST API" />;
     default:
       return (
-        <div>
-          <p>lol</p>
-        </div>
+        <Para>
+          You can choose to use either a REST or a GraphQL API. Both are running
+          on Node.js
+        </Para>
       );
   }
 }
 
 export const Home = () => {
-  const [show, setShow] = useState("REST");
+  const [component, setComponent] = useState();
 
-  function get(value) {
-    setShow(value);
+  function getChoice(component) {
+    setComponent(component);
   }
 
   return (
@@ -55,15 +73,16 @@ export const Home = () => {
         <Header>Dissertation Client app</Header>
         <Para>
           This is an app used to test out two different implementations for
-          retrieving data from the sama database{" "}
+          retrieving data from the sama database
         </Para>
-        <Para>
-          You can choose to use either a REST or a GraphQL API. Both are running
-          on Node.js
-        </Para>
-        <Choice getName={value => get(value)} />
+        <ButtonContainer>
+          <ChoiceButton onClick={() => getChoice("GraphQL")}>
+            GraphQL
+          </ChoiceButton>
+          <ChoiceButton onClick={() => getChoice("REST")}>REST</ChoiceButton>
+        </ButtonContainer>
       </HeaderContainer>
-      <BodyContainer>{showBody(show)}</BodyContainer>
+      <BodyContainer>{showComponent(component)}</BodyContainer>
     </Wrapper>
   );
 };
