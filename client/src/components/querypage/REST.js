@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { University } from "./category/university";
-import { switchQuery } from "./queries/restQueries";
+import { switchQuery } from "../../data/REST/";
 import { UniRes } from "./results/uniRes";
 
 const Container = styled.div`
