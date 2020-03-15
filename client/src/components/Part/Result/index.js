@@ -37,24 +37,25 @@ const ResultContainer = styled.div`
   display: flex;
 `;
 
-export const UniRes = props => {
+export const Result = props => {
   return (
     <Container>
       <ScrollContainer>
-        {props.unis.map(uni => {
-          return (
-            <UniContainer key={uni.university_id}>
-              <Title key={uni.university_id}>{uni.university_name}</Title>
-              <InnerData>Country: {uni.country}</InnerData>
-              <InnerData>Founded: {uni.founding_date}</InnerData>
-              <ResultContainer>
-                <ScoreData>Score 2018: {uni.score_2018}</ScoreData>
-                <ScoreData>Score 2019: {uni.score_2019}</ScoreData>
-                <ScoreData>Score 2020: {uni.score_2020}</ScoreData>
-              </ResultContainer>
-            </UniContainer>
-          );
-        })}
+        {props.universities &&
+          props.universities.map(uni => {
+            return (
+              <UniContainer key={uni.university_id}>
+                <Title key={uni.university_id}>{uni.university_name}</Title>
+                <InnerData>Country: {uni.country}</InnerData>
+                <InnerData>Founded: {uni.founding_date}</InnerData>
+                <ResultContainer>
+                  <ScoreData>Score 2018: {uni.score_2018}</ScoreData>
+                  <ScoreData>Score 2019: {uni.score_2019}</ScoreData>
+                  <ScoreData>Score 2020: {uni.score_2020}</ScoreData>
+                </ResultContainer>
+              </UniContainer>
+            );
+          })}
       </ScrollContainer>
     </Container>
   );

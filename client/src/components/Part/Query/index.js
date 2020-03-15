@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import { GetAll } from "../GetAll/";
 
 const Container = styled.div`
   display: flex;
@@ -10,7 +11,7 @@ const CatTitle = styled.h4`
   align-self: center;
 `;
 
-const FieldContainer = styled.div`
+export const FieldContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -20,13 +21,13 @@ const FieldContainer = styled.div`
   padding-right: 20px;
 `;
 
-const Field = styled.p`
+export const Field = styled.p`
   padding: 10px;
   font-weight: 900;
   font-size: 0.8em;
 `;
 
-const Switch = styled.button`
+export const Switch = styled.button`
   background-color: green;
   color: white;
   font-size: 0.8em;
@@ -39,7 +40,7 @@ const Switch = styled.button`
   margin: 2px;
 `;
 
-const NInput = styled.input`
+export const NInput = styled.input`
   border: 2px solid green;
   border-radius: 4px;
   height: 20px;
@@ -47,28 +48,26 @@ const NInput = styled.input`
   align-self: center;
 `;
 
-export const University = props => {
+export const Query = props => {
+  console.log(props);
   const [id, setId] = useState();
 
   const queries = [
-    { name: "Get all universities", args: {} },
-    { name: "Get Single University", args: { id } },
+    { name: "Get all universities", qName: "getAll", args: {} },
+    { name: "Get Single University", qName: "getByID", args: { id } },
     { name: "Add University", args: { uni: {} } }
   ];
 
   return (
     <Container>
-      <CatTitle>{props.title}</CatTitle>
-      <FieldContainer>
-        <Field>{queries[0].name}</Field>
-        <Switch onClick={() => props.query(queries[0].name)}>Go</Switch>
-        <Switch onClick={() => props.log()}>Log</Switch>
-      </FieldContainer>
+      <GetAll query={queries[0]} returnQuery={props.query} log={props.log} />
       <FieldContainer>
         <Field>{queries[1].name}</Field>
         <NInput placeholder="ID" onChange={e => setId(e.target.value)} />
         <Switch
-          onClick={() => props.query(queries[1].name, queries[1].args.id)}
+          onClick={() =>
+            props.query(queries[1].qName, queries[1].args.id, props.queryChoice)
+          }
         >
           Go
         </Switch>

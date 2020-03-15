@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import REST from "../querypage/REST";
-import { GraphQl } from "../querypage/graphQl";
+import QueryView from "../QueryView";
 
 const Wrapper = styled.div`
   font-family: Tahoma, Geneva, sans-serif;
@@ -40,28 +39,8 @@ const ChoiceButton = styled.button`
 
 const Para = styled.p``;
 
-function showComponent(component) {
-  switch (component) {
-    case "GraphQL":
-      return <GraphQl title="GraphQL API" />;
-    case "REST":
-      return <REST title="REST API" />;
-    default:
-      return (
-        <Para>
-          You can choose to use either a REST or a GraphQL API. Both are running
-          on Node.js
-        </Para>
-      );
-  }
-}
-
-export const Home = () => {
-  const [component, setComponent] = useState();
-
-  function getChoice(component) {
-    setComponent(component);
-  }
+export const HomeView = () => {
+  const [queryChoice, setQueryChoice] = useState("REST");
 
   return (
     <Wrapper>
@@ -72,13 +51,20 @@ export const Home = () => {
           retrieving data from the sama database
         </Para>
         <ButtonContainer>
-          <ChoiceButton onClick={() => getChoice("GraphQL")}>
+          <ChoiceButton onClick={() => setQueryChoice("GraphQL")}>
             GraphQL
           </ChoiceButton>
-          <ChoiceButton onClick={() => getChoice("REST")}>REST</ChoiceButton>
+          <ChoiceButton onClick={() => setQueryChoice("REST")}>
+            REST
+          </ChoiceButton>
         </ButtonContainer>
       </HeaderContainer>
-      <BodyContainer>{showComponent(component)}</BodyContainer>
+      <BodyContainer>
+        <QueryView
+          queryChoice={queryChoice}
+          title={`Queries are being executed with ${queryChoice}`}
+        />
+      </BodyContainer>
     </Wrapper>
   );
 };

@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { Home } from "./components/home/home";
+import { HomeView } from "./components/View/HomeView";
 
 const Container = styled.div`
   position: absolute;
@@ -15,7 +15,7 @@ const Container = styled.div`
 function App() {
   return (
     <Container className="App">
-      <Home />
+      <HomeView />
     </Container>
   );
 }
