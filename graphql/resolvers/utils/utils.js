@@ -74,18 +74,12 @@ async function deleteEntry(identifier, argsid) {
 
 function getAllQueryString(identifier, args) {
   if (args && args.search && args.year) {
-    console.log("asd");
     return `select * from ${identifier} where ${identifier}_id = ${args.search} and year = ${args.year}`;
   } else if (args && args.search) {
-    console.log("dasd");
-
     return `select * from ${identifier} where ${identifier}_id = ${args.search}`;
   } else if (args && args.year) {
-    console.log("wasd");
-
     return `select * from ${identifier} where year = ${args.year}`;
   }
-  console.log("ased");
 
   return `select * from ${identifier}`;
 }

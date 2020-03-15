@@ -1,14 +1,12 @@
 import React from "react";
-import styled from "styled-components";
 import { FieldContainer, Field, Switch } from "../Query";
 
 export const GetAll = props => {
-  console.log(props);
+  const { name, qName, queryChoice, returnQuery } = props.query;
   return (
     <FieldContainer>
-      <Field>{props.query.name}</Field>
-      <Switch onClick={() => props.returnQuery(props.query.qName)}>Go</Switch>
-      <Switch onClick={() => props.log()}>Log</Switch>
+      <Field>{name}</Field>
+      <Switch onClick={() => returnQuery(queryChoice, qName)}>Go</Switch>
     </FieldContainer>
   );
 };

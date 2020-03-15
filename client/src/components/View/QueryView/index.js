@@ -33,15 +33,13 @@ export default class QueryView extends React.Component {
   };
 
   render() {
-    console.log(this.props);
-
     const logedi = () => {
       console.log(this.state);
     };
 
-    const getQuery = async (value, id) => {
+    const getQuery = async (queryMode, value, id) => {
       console.log(value, id);
-      const universities = await switchQuery(value, id);
+      const universities = await switchQuery(queryMode, value, id);
       this.setState({ universities });
     };
 

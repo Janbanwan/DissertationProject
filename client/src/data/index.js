@@ -1,12 +1,32 @@
-import { getUniversities, getSingleUniversity } from "./REST";
+import { getUniversitiesREST, getSingleUniversityREST } from "./REST";
+import { getUniversitiesGraphQL, getSingleUniversityGraphQL } from "./GraphQL";
 
-export function switchQuery(query, id, queryMode) {
+export function switchQuery(queryMode, query, id) {
+  console.log(queryMode, query, id);
+  if (queryMode === "REST") {
+    return SwitchREST(query, id);
+  } else if (queryMode === "GraphQL") {
+    return SwitchGraphql(query, id);
+  }
+}
+
+function SwitchREST(query, id) {
   switch (query) {
     case "getAll":
-      return getUniversities();
+      return getUniversitiesREST();
     case "getByID":
-      console.log(id);
-      return getSingleUniversity(id);
+      return getSingleUniversityREST(id);
+    default:
+      break;
+  }
+}
+
+function SwitchGraphql(query, id) {
+  switch (query) {
+    case "getAll":
+      return getUniversitiesGraphQL();
+    case "getByID":
+      return getSingleUniversityGraphQL(id);
     default:
       break;
   }

@@ -38,6 +38,9 @@ const ResultContainer = styled.div`
 `;
 
 export const Result = props => {
+  console.log("props");
+  console.log(props);
+  console.log("props");
   return (
     <Container>
       <ScrollContainer>
@@ -45,7 +48,9 @@ export const Result = props => {
           props.universities.map(uni => {
             return (
               <UniContainer key={uni.university_id}>
-                <Title key={uni.university_id}>{uni.university_name}</Title>
+                <Title key={uni.university_id}>
+                  ID: {uni.university_id} {uni.university_name}
+                </Title>
                 <InnerData>Country: {uni.country}</InnerData>
                 <InnerData>Founded: {uni.founding_date}</InnerData>
                 <ResultContainer>

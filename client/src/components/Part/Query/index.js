@@ -1,14 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import { GetAll } from "../GetAll/";
+import { GetByID } from "../GetByID";
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-`;
-
-const CatTitle = styled.h4`
-  align-self: center;
 `;
 
 export const FieldContainer = styled.div`
@@ -50,36 +47,35 @@ export const NInput = styled.input`
 
 export const Query = props => {
   console.log(props);
-  const [id, setId] = useState();
-
   const queries = [
-    { name: "Get all universities", qName: "getAll", args: {} },
-    { name: "Get Single University", qName: "getByID", args: { id } },
+    {
+      name: "Get all universities",
+      qName: "getAll",
+      returnQuery: props.query,
+      queryChoice: props.queryChoice
+    },
+    {
+      name: "Get Single University",
+      qName: "getByID",
+      returnQuery: props.query,
+      queryChoice: props.queryChoice
+    },
     { name: "Add University", args: { uni: {} } }
   ];
 
   return (
     <Container>
-      <GetAll query={queries[0]} returnQuery={props.query} log={props.log} />
-      <FieldContainer>
-        <Field>{queries[1].name}</Field>
-        <NInput placeholder="ID" onChange={e => setId(e.target.value)} />
-        <Switch
-          onClick={() =>
-            props.query(queries[1].qName, queries[1].args.id, props.queryChoice)
-          }
-        >
-          Go
-        </Switch>
-      </FieldContainer>
+      <GetAll query={queries[0]} />
+      <GetByID query={queries[1]} />
+
       <FieldContainer>
         <Field>{queries[2].name}</Field>
-        <NInput placeholder="Name" onChange={e => setId(e.target.value)} />
-        <NInput placeholder="Date" onChange={e => setId(e.target.value)} />
-        <NInput placeholder="country" onChange={e => setId(e.target.value)} />
-        <NInput placeholder="score 18" onChange={e => setId(e.target.value)} />
-        <NInput placeholder="score 19" onChange={e => setId(e.target.value)} />
-        <NInput placeholder="score 20" onChange={e => setId(e.target.value)} />
+        <NInput placeholder="Name" onChange={e => {}} />
+        <NInput placeholder="Date" onChange={e => {}} />
+        <NInput placeholder="country" onChange={e => {}} />
+        <NInput placeholder="score 18" onChange={e => {}} />
+        <NInput placeholder="score 19" onChange={e => {}} />
+        <NInput placeholder="score 20" onChange={e => {}} />
 
         <Switch
           onClick={() => props.query(queries[1].name, queries[1].args.id)}
