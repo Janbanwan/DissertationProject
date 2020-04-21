@@ -28,19 +28,14 @@ const ContainerRight = styled.div``;
 
 export default class QueryView extends React.Component {
   state = {
-    universities: [],
-    queryChoice: "REST"
+    result: [],
+    queryChoice: "REST",
   };
 
   render() {
-    const logedi = () => {
-      console.log(this.state);
-    };
-
-    const getQuery = async (queryMode, value, id) => {
-      console.log(value, id);
-      const universities = await switchQuery(queryMode, value, id);
-      this.setState({ universities });
+    const getQuery = async (queryMode, value, id, path, addons) => {
+      const result = await switchQuery(queryMode, value, id, path, addons);
+      this.setState({ result });
     };
 
     return (
@@ -48,14 +43,10 @@ export default class QueryView extends React.Component {
         <Title>{this.props.title}</Title>
         <InnerContainer>
           <ContainerLeft>
-            <Query
-              query={getQuery}
-              log={logedi}
-              queryChoice={this.props.queryChoice}
-            />
+            <Query query={getQuery} queryChoice={this.props.queryChoice} />
           </ContainerLeft>
           <ContainerRight>
-            <Result universities={this.state.universities} />
+            <Result result={this.state.result} />
           </ContainerRight>
         </InnerContainer>
       </Container>

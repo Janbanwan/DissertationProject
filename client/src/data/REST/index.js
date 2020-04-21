@@ -1,15 +1,17 @@
-const allUniversities = `http://localhost:8000/api/v1/university/`;
+const baseURL = `http://localhost:8000/api/v1/`;
 
-export async function getUniversitiesREST() {
-  const unis = await fetch(allUniversities).then(res => {
+export async function getCategoryREST(path, addons) {
+  path = path === "Universities" ? "University" : path;
+  const unis = await fetch(baseURL + path).then((res) => {
     return res.json();
   });
   return unis;
 }
 
-export async function getSingleUniversityREST(id) {
-  const universityUrl = allUniversities + id;
-  const unis = await fetch(universityUrl).then(res => {
+export async function getSingleREST(path, addons, id) {
+  path = path === "Universities" ? "University" : path;
+  const Url = baseURL + path + "/" + id;
+  const unis = await fetch(Url).then((res) => {
     return res.json();
   });
   return unis;
