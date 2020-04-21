@@ -9,13 +9,21 @@ export const GetAll = (props) => {
     returnQuery,
     qcategory,
     addons,
+    fullResults,
   } = props.query;
   return (
     <FieldContainer>
       <Field>{name}</Field>
       <Switch
         onClick={() =>
-          returnQuery(queryChoice, qName, undefined, qcategory, addons)
+          returnQuery(
+            queryChoice,
+            qName,
+            undefined,
+            qcategory,
+            addons,
+            fullResults
+          )
         }
       >
         Go

@@ -14,95 +14,126 @@ async function graphQLFetcher(query) {
     });
 }
 
-export async function getAllGraphQL(path, addons) {
-  const query = buildQueryString(path, addons);
+export async function getAllGraphQL(path, addons, fullResults) {
+  const query = buildQueryString(path, addons, undefined, fullResults);
   const result = await graphQLFetcher(query);
 
   return getResult(path, result);
 }
 
-export async function getSingleGraphQL(path, addons, id) {
-  const query = buildQueryString(path, addons, id);
+export async function getSingleGraphQL(path, addons, id, fullResults) {
+  const query = buildQueryString(path, addons, id, fullResults);
   const result = await graphQLFetcher(query);
   return getResult(path, result);
 }
 
 function getResult(path, result) {
-  switch (path) {
-    case "Universities":
-      return result.getUniversities;
-    case "Teaching":
-      return result.getTeaching;
-    case "Research":
-      return result.getResearch;
-    case "Finances":
-      return result.getFinances;
-    case "Internationality":
-      return result.getInternationality;
-    default:
-      return ``;
+  if (result === undefined) {
+    return ``;
+  } else {
+    switch (path) {
+      case "Universities":
+        return result.getUniversities;
+      case "Teaching":
+        return result.getTeaching;
+      case "Research":
+        return result.getResearch;
+      case "Finances":
+        return result.getFinances;
+      case "Internationality":
+        return result.getInternationality;
+      default:
+        return ``;
+    }
   }
 }
 
 const searchString = (id) => (id === undefined ? `` : `(search: ${id})`);
 
-function uniQueryString(addons, id, skip) {
-  const uni = `
-    university_id 
-    university_name 
-    founding_date 
-    country 
-    score_2018 
-    score_2019 
-    score_2020 
-    ${skip === true ? "" : getAddonQueryStringForUni(addons)}
-  `;
+function uniQueryString(addons, id, skip, fullResults) {
+  const uni = fullResults
+    ? `
+      university_id 
+      university_name 
+      founding_date 
+      country 
+      score_2018 
+      score_2019 
+      score_2020 
+      ${skip === true ? "" : getAddonQueryStringForUni(addons)}
+    `
+    : `
+      university_id 
+      score_2018 
+      score_2019 
+      score_2020 
+      ${skip === true ? "" : getAddonQueryStringForUni(addons)}`;
 
   return uni;
 }
 
-function getAddonQueryStringForUni(addons) {
+function getAddonQueryStringForUni(addons, fullResults) {
   let queryString = "";
   if (addons.includes("teaching")) {
     queryString =
       queryString +
-      `teaching { ${teaQueryString(undefined, undefined, true)} }\n`;
+      `teaching { ${teaQueryString(
+        undefined,
+        undefined,
+        true,
+        fullResults
+      )} }\n`;
   }
 
   if (addons.includes("finances")) {
     queryString =
       queryString +
-      `finance { ${finQueryString(undefined, undefined, true)} }\n`;
+      `finance { ${finQueryString(
+        undefined,
+        undefined,
+        true,
+        fullResults
+      )} }\n`;
   }
 
   if (addons.includes("research")) {
     queryString =
       queryString +
-      `research { ${resQueryString(undefined, undefined, true)} }\n`;
+      `research { ${resQueryString(
+        undefined,
+        undefined,
+        true,
+        fullResults
+      )} }\n`;
   }
 
   if (addons.includes("internationality")) {
     queryString =
       queryString +
-      `internationality { ${intQueryString(undefined, undefined, true)} }\n`;
+      `internationality { ${intQueryString(
+        undefined,
+        undefined,
+        true,
+        fullResults
+      )} }\n`;
   }
 
   return queryString;
 }
 
-function getUniStringFromAddons(addons) {
+function getUniStringFromAddons(addons, fullResults) {
   let uni = ``;
-  console.log("VITAUFDANSOFDS");
   if (addons.includes("university")) {
     uni = `university {
-      ${uniQueryString(undefined, undefined, true)}
+      ${uniQueryString(undefined, undefined, true, fullResults)}
     }`;
   }
   return uni;
 }
 
-function teaQueryString(addons, id, skip) {
-  return ` 
+function teaQueryString(addons, id, skip, fullResults) {
+  return fullResults
+    ? ` 
     teaching_id
     university_id
     student_satisfaction
@@ -117,22 +148,39 @@ function teaQueryString(addons, id, skip) {
     section_score
     year 
     ${skip === true ? "" : getUniStringFromAddons(addons, skip)}
-  `;
+  `
+    : ` 
+  university_id
+  section_score
+  year 
+  ${skip === true ? "" : getUniStringFromAddons(addons, skip)}
+`;
 }
 
-function finQueryString(addons, id, skip) {
-  return `
+function finQueryString(addons, id, skip, fullResults) {
+  return fullResults
+    ? `
     finances_id
     university_id
     private_investments
     government_funding
     institutional_income
-    ${skip === true ? "" : getUniStringFromAddons(addons)}
-`;
+    section_score
+
+    ${skip === true ? "" : getUniStringFromAddons(addons)} 
+    `
+    : `
+    university_id
+    section_score
+  year
+
+    ${skip === true ? "" : getUniStringFromAddons(addons)} 
+    `;
 }
 
-function resQueryString(addons, id, skip) {
-  return `
+function resQueryString(addons, id, skip, fullResults) {
+  return fullResults
+    ? `
     research_id
     university_id
     research_income
@@ -140,43 +188,61 @@ function resQueryString(addons, id, skip) {
     research_ratings
     number_of_citations
     number_of_publications
+    section_score
+    ${skip === true ? "" : getUniStringFromAddons(addons)}
+    `
+    : `
+    university_id
+    section_score
+  year
+
     ${skip === true ? "" : getUniStringFromAddons(addons)}
     `;
 }
 
-function intQueryString(addons, id, skip) {
-  return `
+function intQueryString(addons, id, skip, fullResults) {
+  return fullResults
+    ? `
     internationality_id
     university_id
     international_students
     international_staff
+    section_score
     ${skip === true ? "" : getUniStringFromAddons(addons)}
-  `;
+  `
+    : `
+  university_id
+  section_score
+  year
+  ${skip === true ? "" : getUniStringFromAddons(addons)}
+`;
 }
 
-function buildQueryString(path, addons, id) {
+function buildQueryString(path, addons, id, fullResults) {
+  console.log(id);
   const x = `query { get${path}${searchString(id)}{${combineQueryString(
     path,
     addons,
-    id
+    id,
+    fullResults
   )}}}`;
 
   console.log(x);
   return x;
 }
 
-function combineQueryString(path, addons, id) {
+function combineQueryString(path, addons, id, fullResults) {
   switch (path) {
     case "Universities":
-      return uniQueryString(addons, id);
+      return uniQueryString(addons, id, false, fullResults);
     case "Teaching":
-      return teaQueryString(addons, id);
+      return teaQueryString(addons, id, false, fullResults);
     case "Finances":
-      return finQueryString(addons, id);
+      return finQueryString(addons, id, false, fullResults);
     case "Research":
-      return resQueryString(addons, id);
+      return resQueryString(addons, id, false, fullResults);
     case "Internationality":
-      return intQueryString(addons, id);
+      return intQueryString(addons, id, false, fullResults);
     default:
       return ``;
   }

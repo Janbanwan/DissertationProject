@@ -69,9 +69,16 @@ const OptionContainer = styled.div`
   flex-direction: row;
 `;
 
+const ResultToggle = styled.button`
+  width: 200px;
+  color: white;
+  background-color: #4d004d;
+`;
+
 export const Query = (props) => {
   let [qcategory, setqCategory] = useState("Universities");
   let [addons, setAddons] = useState([]);
+  let [fullResults, setFullResults] = useState(true);
 
   function addItem(addon) {
     if (addons.length === 0) {
@@ -98,6 +105,7 @@ export const Query = (props) => {
       returnQuery: props.query,
       queryChoice: props.queryChoice,
       addons,
+      fullResults,
     },
     {
       name: "Get Single " + qcategory,
@@ -106,6 +114,7 @@ export const Query = (props) => {
       returnQuery: props.query,
       queryChoice: props.queryChoice,
       addons,
+      fullResults,
     },
   ];
 
@@ -130,102 +139,58 @@ export const Query = (props) => {
       <GetAll query={queries[0]} />
       <GetByID query={queries[1]} />
       <CheckContainer>
-        {qcategory === "Universities" ? (
-          <h3>Select subcategories</h3>
-        ) : (
-          <h3>Include university?</h3>
-        )}
+        <h3>Select subcategories</h3>
 
-        {qcategory !== "Universities" ? (
-          <OptionContainer>
-            <label>Yes</label>
-            <input
-              type="checkbox"
-              value="university"
-              onChange={(e) => addItem(e.target.value)}
-            />
-          </OptionContainer>
-        ) : (
-          <OptionContainer>
-            <input
-              type="checkbox"
-              value="teaching"
-              onChange={(e) => addItem(e.target.value)}
-            />
-            <label>Teaching</label>
+        <OptionContainer>
+          <input
+            type="checkbox"
+            value="university"
+            disabled={qcategory === "Universities"}
+            onChange={(e) => addItem(e.target.value)}
+          />
+          <label>University</label>
 
-            <input
-              type="checkbox"
-              value="finances"
-              onChange={(e) => addItem(e.target.value)}
-            />
-            <label>Finances</label>
+          <input
+            type="checkbox"
+            value="teaching"
+            onChange={(e) => addItem(e.target.value)}
+            disabled={qcategory !== "Universities"}
+          />
+          <label>Teaching</label>
 
-            <input
-              type="checkbox"
-              value="research"
-              onChange={(e) => addItem(e.target.value)}
-            />
-            <label>Research</label>
+          <input
+            type="checkbox"
+            value="finances"
+            onChange={(e) => addItem(e.target.value)}
+            disabled={qcategory !== "Universities"}
+          />
+          <label>Finances</label>
 
-            <input
-              type="checkbox"
-              value="internationality"
-              onChange={(e) => addItem(e.target.value)}
-            />
-            <label>Internationality</label>
-          </OptionContainer>
-        )}
+          <input
+            type="checkbox"
+            value="research"
+            onChange={(e) => addItem(e.target.value)}
+            disabled={qcategory !== "Universities"}
+          />
+          <label>Research</label>
+
+          <input
+            type="checkbox"
+            value="internationality"
+            onChange={(e) => addItem(e.target.value)}
+            disabled={qcategory !== "Universities"}
+          />
+          <label>Internationality</label>
+        </OptionContainer>
       </CheckContainer>
-      <button onClick={() => console.log(addons)}>Test state</button>
+      <CheckContainer>
+        <h3>Que for full results or scores only?</h3>
+        <ResultToggle onClick={() => setFullResults(!fullResults)}>
+          {fullResults
+            ? `Querying for full results`
+            : `Querying for only scores`}
+        </ResultToggle>
+      </CheckContainer>
     </Container>
   );
 };
-
-/**
- *   const [uniId, setUniId] = useState(false);
-  const [uniName, setUniName] = useState(false);
-  const [uniDate, setUniDate] = useState(false);
-  const [uniCountry, setUniCountry] = useState(false);
-  const [uni2018, setUni2018] = useState(false);
-  const [uni2019, setUni2019] = useState(false);
-  const [uni2020, setUni2020] = useState(false);
-
-  function setState(name) {
-    switch (name) {
-      case "university_id":
-        setUniId(!uniId);
-        break;
-      case "university_name":
-        setUniName(!uniName);
-        break;
-      case "founding_date":
-        setUniDate(!uniDate);
-        break;
-      case "country":
-        setUniCountry(!uniCountry);
-        break;
-      case "score_2018":
-        setUni2018(!uni2018);
-        break;
-      case "score_2019":
-        setUni2019(!uni2019);
-        break;
-      case "score_2020":
-        setUni2020(!uni2020);
-        break;
-      default:
-        break;
-    }
-  }
-
-  const fields = [
-    { name: "university_id", state: uniId },
-    { name: "university_name", state: uniName },
-    { name: "founding_date", state: uniDate },
-    { name: "country", state: uniCountry },
-    { name: "score_2018", state: uni2018 },
-    { name: "score_2019", state: uni2019 },
-    { name: "score_2020", state: uni2020 }
-  ];
- */

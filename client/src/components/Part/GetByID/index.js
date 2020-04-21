@@ -11,6 +11,7 @@ export const GetByID = (props) => {
     returnQuery,
     qcategory,
     addons,
+    fullResults,
   } = props.query;
 
   return (
@@ -18,7 +19,9 @@ export const GetByID = (props) => {
       <Field>{name}</Field>
       <NInput placeholder="ID" onChange={(e) => setId(e.target.value)} />
       <Switch
-        onClick={() => returnQuery(queryChoice, qName, id, qcategory, addons)}
+        onClick={() =>
+          returnQuery(queryChoice, qName, id, qcategory, addons, fullResults)
+        }
       >
         Go
       </Switch>
