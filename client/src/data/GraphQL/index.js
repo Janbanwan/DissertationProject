@@ -219,16 +219,12 @@ function intQueryString(addons, id, skip, fullResults) {
 }
 
 function buildQueryString(path, addons, id, fullResults) {
-  console.log(id);
-  const x = `query { get${path}${searchString(id)}{${combineQueryString(
+  return `query { get${path}${searchString(id)}{${combineQueryString(
     path,
     addons,
     id,
     fullResults
   )}}}`;
-
-  console.log(x);
-  return x;
 }
 
 function combineQueryString(path, addons, id, fullResults) {

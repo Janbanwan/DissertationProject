@@ -23,7 +23,6 @@ async function gatherResults(queries, query, id, fullResults) {
   let resultObject = {};
   let promises = queries.map(async (q) => {
     q = q.toLowerCase();
-    console.log(query, id, q);
     let category = await SwitchREST(query, id, q);
 
     if (!fullResults) {
@@ -35,13 +34,10 @@ async function gatherResults(queries, query, id, fullResults) {
 
   await Promise.all(promises);
 
-  console.log(resultObject);
-
   return resultObject;
 }
 
 function filterCategory(category, q) {
-  console.log(category, q);
   switch (q) {
     case "universities":
       let filteredArray = [];
