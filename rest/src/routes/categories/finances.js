@@ -5,7 +5,7 @@ const {
   getCategoryId,
   postCategory,
   updateCategory,
-  deleteCategory
+  deleteCategory,
 } = require("./utils/utils");
 
 const identifier = "finances";

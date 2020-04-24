@@ -5,8 +5,16 @@ const {
   getCategoryId,
   postCategory,
   updateCategory,
-  deleteCategory
+  deleteCategory,
 } = require("./utils/utils");
+
+/**
+ * Identifier is used to identify the server when the functions in the util folder construct the different queries
+ * PK signals primary key
+ *
+ * The different endpoints are initiated here.
+ * The main functionality happens within the utils function
+ */
 
 const identifier = "teaching";
 const pk = "teaching_id";

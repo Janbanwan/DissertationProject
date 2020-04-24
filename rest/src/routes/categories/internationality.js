@@ -5,7 +5,7 @@ const {
   getCategoryId,
   postCategory,
   updateCategory,
-  deleteCategory
+  deleteCategory,
 } = require("./utils/utils");
 
 const identifier = "internationality";
@@ -30,4 +30,5 @@ internationality.delete(`/${identifier}/:id`, async (request, result, next) => {
 internationality.put(`/${identifier}/:id`, async (request, result, next) => {
   result.send(await updateCategory(identifier, request, pk));
 });
+
 module.exports = internationality;
