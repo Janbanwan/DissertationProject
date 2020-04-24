@@ -5,13 +5,18 @@ const Research = require("./research");
 const Internationality = require("./internationality");
 const Finance = require("./finance");
 
+/**
+ * Contains all the resolvers from different categories
+ * This is imported to the server for creation
+ */
+
 module.exports = {
   Query: {
     getUniversities: University.queries.getUniversities,
     getTeaching: Teaching.queries.getTeaching,
     getFinances: Finance.queries.getFinances,
     getInternationality: Internationality.queries.getInternationality,
-    getResearch: Research.queries.getResearch
+    getResearch: Research.queries.getResearch,
   },
   Mutation: {
     addUniversity: University.mutations.addUniversity,
@@ -28,11 +33,11 @@ module.exports = {
     removeResearch: Research.mutations.removeResearch,
     addFinances: Finance.mutations.addFinances,
     updateFinances: Finance.mutations.updateFinances,
-    removeFinances: Finance.mutations.removeFinances
+    removeFinances: Finance.mutations.removeFinances,
   },
   University: University.queries.nested,
   Teaching: Teaching.queries.nested,
   Research: Research.queries.nested,
   Internationality: Internationality.queries.nested,
-  Finance: Finance.queries.nested
+  Finance: Finance.queries.nested,
 };
