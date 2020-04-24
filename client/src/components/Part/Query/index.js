@@ -74,12 +74,20 @@ const ResultToggle = styled.button`
   color: white;
   background-color: #4d004d;
 `;
-
+/**
+ * Component allows users to specify and execute queries
+ * @param {Contains the getResults function used to retrieve and process data from the API's
+ * as well as the query method chosen in home view } props
+ */
 export const Query = (props) => {
   let [qcategory, setqCategory] = useState("Universities");
   let [addons, setAddons] = useState([]);
   let [fullResults, setFullResults] = useState(true);
 
+  /**
+   *
+   * @param {Additional category added or removed from the addons array} addon
+   */
   function addItem(addon) {
     if (addons.length === 0) {
       setAddonToArray(addon);
@@ -92,7 +100,10 @@ export const Query = (props) => {
       }
     }
   }
-
+  /**
+   * Helper function used to add the addon to the state array
+   * @param {Additional category added or removed from the addons array} addon
+   */
   function setAddonToArray(addon) {
     setAddons([...addons, addon]);
   }

@@ -1,14 +1,28 @@
 import { getCategoryREST, getSingleREST } from "./REST";
-import { getAllGraphQL, getSingleGraphQL } from "./GraphQL";
-
+import { getGraphQL } from "./GraphQL";
+/**
+ *
+ * @param {Indetifies which mode the query is operated in} queryMode
+ * @param {Identifies which query is being executed} query
+ * @param {ID if a specific object is being queried for} id
+ * @param {Category identifier} path
+ * @param {Additional categories if present} addons
+ * @param {Toggles whether full results or section scores are returned} fullResults
+ */
 export function switchQuery(queryMode, query, id, path, addons, fullResults) {
   if (queryMode === "REST") {
     return createResultObject(query, id, path, addons, fullResults);
   } else if (queryMode === "GraphQL") {
-    return SwitchGraphql(query, id, path, addons, fullResults);
+    return getGraphQL(path, addons, id, fullResults);
   }
 }
-
+/**
+ * @param {Identifies which query is being executed} query
+ * @param {ID if a specific object is being queried for} id
+ * @param {Category identifier} path
+ * @param {Additional categories if present} addons
+ * @param {Toggles whether full results or section scores are returned} fullResults
+ */
 async function createResultObject(query, id, path, addons, fullResults) {
   let queries = [];
 
@@ -18,7 +32,13 @@ async function createResultObject(query, id, path, addons, fullResults) {
 
   return await gatherResults(queries, query, id, fullResults);
 }
-
+/**
+ *
+ * @param {The main category, as well as the addon categories} queries
+ * @param {query mode} query
+ * @param {Identifier of a specific object if queried for} id
+ * @param {Toggles whether full results or section scores are returned} fullResults
+ */
 async function gatherResults(queries, query, id, fullResults) {
   let resultObject = {};
   let promises = queries.map(async (q) => {
@@ -36,7 +56,11 @@ async function gatherResults(queries, query, id, fullResults) {
 
   return resultObject;
 }
-
+/**
+ *
+ * @param {The being filtered} category
+ * @param {All the results from the REST query} q
+ */
 function filterCategory(category, q) {
   switch (q) {
     case "universities":
@@ -80,7 +104,11 @@ function filterCategory(category, q) {
       return {};
   }
 }
-
+/**
+ *
+ * @param {Results from rest query} q
+ * @param {Category being compiled} category
+ */
 function buildObject(q, category) {
   switch (q) {
     case "universities":
@@ -99,24 +127,18 @@ function buildObject(q, category) {
       return {};
   }
 }
-
+/**
+ *
+ * @param {Query mode} query
+ * @param {ID for specific object being queried} id
+ * @param {category being queried} path
+ */
 async function SwitchREST(query, id, path) {
   switch (query) {
     case "getAll":
       return await getCategoryREST(path);
     case "getByID":
       return await getSingleREST(path, id);
-    default:
-      break;
-  }
-}
-
-function SwitchGraphql(query, id, path, addons, fullResults) {
-  switch (query) {
-    case "getAll":
-      return getAllGraphQL(path, addons, fullResults);
-    case "getByID":
-      return getSingleGraphQL(path, addons, id, fullResults);
     default:
       break;
   }

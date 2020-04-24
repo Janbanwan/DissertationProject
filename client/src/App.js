@@ -11,7 +11,10 @@ const Container = styled.div`
   align-content: center;
   width: 100%;
 `;
-
+/**
+ * Root object for REST application
+ * Used to define global styles
+ */
 function App() {
   return (
     <Container className="App">

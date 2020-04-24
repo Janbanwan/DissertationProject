@@ -4,7 +4,10 @@ const Container = styled.div`
   width: 600px;
   overflow: wrap;
 `;
-
+/**
+ * Component shows the result object and its lenght
+ * @param {Contains the result object} props
+ */
 export const Result = (props) => {
   return (
     <Container>

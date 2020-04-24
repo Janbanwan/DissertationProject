@@ -38,7 +38,12 @@ const ChoiceButton = styled.button`
 `;
 
 const Para = styled.p``;
-
+/**
+ * The back page of the application
+ *
+ * Allows the user to change between the query choice via the queryChoice state object.
+ *
+ */
 export const HomeView = () => {
   const [queryChoice, setQueryChoice] = useState("REST");
 

@@ -1,5 +1,9 @@
 const GraphURL = `http://localhost:4000/`;
-
+/**
+ * Sends the query to the graphql endpoint
+ *
+ * @param {Query string to be sent to the backend} query
+ */
 async function graphQLFetcher(query) {
   return await fetch(GraphURL, {
     method: "POST",
@@ -13,20 +17,27 @@ async function graphQLFetcher(query) {
       return res.data;
     });
 }
-
-export async function getAllGraphQL(path, addons, fullResults) {
-  const query = buildQueryString(path, addons, undefined, fullResults);
-  const result = await graphQLFetcher(query);
-
-  return getResult(path, result);
-}
-
-export async function getSingleGraphQL(path, addons, id, fullResults) {
+/**
+ *
+ * @param {Category identifier} path
+ * @param {Additional categories that need to be retrieved} addons
+ * @param {ID of an individual objeect (Optional)} id
+ * @param {Toggles retrieval of full results or section scores} fullResults
+ */
+export async function getGraphQL(path, addons, id = undefined, fullResults) {
   const query = buildQueryString(path, addons, id, fullResults);
   const result = await graphQLFetcher(query);
+
   return getResult(path, result);
 }
 
+/**
+ * Extracts the result object from the response.
+ *
+ * Used as the results provided by the category are returned inside graphQL method name.
+ * @param {Category identifier} path
+ * @param {Result object retrieved from the GraphQL endpoint} result
+ */
 function getResult(path, result) {
   if (result === undefined) {
     return ``;
@@ -47,9 +58,18 @@ function getResult(path, result) {
     }
   }
 }
-
+/**
+ *
+ * @param {returns the search string if ID is provided} id
+ */
 const searchString = (id) => (id === undefined ? `` : `(search: ${id})`);
-
+/**
+ *
+ * @param {Additional categories to be combined to the query} addons
+ * @param {ID for object if searching for particular one} id
+ * @param {Skips the querying for addons if this method is already called as an addon. } skip
+ * @param {Used to determine whether full results or only sections cores are returned} fullResults
+ */
 function uniQueryString(addons, id, skip, fullResults) {
   const uni = fullResults
     ? `
@@ -60,18 +80,23 @@ function uniQueryString(addons, id, skip, fullResults) {
       score_2018 
       score_2019 
       score_2020 
-      ${skip === true ? "" : getAddonQueryStringForUni(addons)}
+      ${skip === true ? "" : getAddonQueryStringForUni(addons, fullResults)}
     `
     : `
       university_id 
       score_2018 
       score_2019 
       score_2020 
-      ${skip === true ? "" : getAddonQueryStringForUni(addons)}`;
+      ${skip === true ? "" : getAddonQueryStringForUni(addons, fullResults)}`;
 
   return uni;
 }
-
+/**
+ * Function responsible for generating the additional query string for university object
+ *
+ * @param {Additional categories required for the query} addons
+ * @param {Used to determine whether full results or section scores are returned} fullResults
+ */
 function getAddonQueryStringForUni(addons, fullResults) {
   let queryString = "";
   if (addons.includes("teaching")) {
@@ -120,7 +145,11 @@ function getAddonQueryStringForUni(addons, fullResults) {
 
   return queryString;
 }
-
+/**
+ *
+ * @param {University addon when queried from the rest of the categories} addons
+ * @param {Determines whether full results are queried or only section scores} fullResults
+ */
 function getUniStringFromAddons(addons, fullResults) {
   let uni = ``;
   if (addons.includes("university")) {
@@ -130,7 +159,13 @@ function getUniStringFromAddons(addons, fullResults) {
   }
   return uni;
 }
-
+/**
+ *
+ * @param {Addons for the query} addons
+ * @param {placeholder not used} id
+ * @param {Used to skip execution } skip
+ * @param {Toggles whether full results or section scores are returned} fullResults
+ */
 function teaQueryString(addons, id, skip, fullResults) {
   return fullResults
     ? ` 
@@ -147,16 +182,22 @@ function teaQueryString(addons, id, skip, fullResults) {
     student_per_teacher
     section_score
     year 
-    ${skip === true ? "" : getUniStringFromAddons(addons, skip)}
+    ${skip === true ? "" : getUniStringFromAddons(addons, fullResults)}
   `
     : ` 
   university_id
   section_score
   year 
-  ${skip === true ? "" : getUniStringFromAddons(addons, skip)}
+  ${skip === true ? "" : getUniStringFromAddons(addons, fullResults)}
 `;
 }
-
+/**
+ *
+ * @param {Addons for the query} addons
+ * @param {placeholder not used} id
+ * @param {Used to skip execution } skip
+ * @param {Toggles whether full results or section scores are returned} fullResults
+ */
 function finQueryString(addons, id, skip, fullResults) {
   return fullResults
     ? `
@@ -167,16 +208,23 @@ function finQueryString(addons, id, skip, fullResults) {
     institutional_income
     section_score
 
-    ${skip === true ? "" : getUniStringFromAddons(addons)} 
+    ${skip === true ? "" : getUniStringFromAddons(addons, fullResults)} 
     `
     : `
     university_id
     section_score
   year
 
-    ${skip === true ? "" : getUniStringFromAddons(addons)} 
+    ${skip === true ? "" : getUniStringFromAddons(addons, fullResults)} 
     `;
 }
+/**
+ *
+ * @param {Addons for the query} addons
+ * @param {placeholder not used} id
+ * @param {Used to skip execution } skip
+ * @param {Toggles whether full results or section scores are returned} fullResults
+ */
 
 function resQueryString(addons, id, skip, fullResults) {
   return fullResults
@@ -189,17 +237,23 @@ function resQueryString(addons, id, skip, fullResults) {
     number_of_citations
     number_of_publications
     section_score
-    ${skip === true ? "" : getUniStringFromAddons(addons)}
+    ${skip === true ? "" : getUniStringFromAddons(addons, fullResults)}
     `
     : `
     university_id
     section_score
   year
 
-    ${skip === true ? "" : getUniStringFromAddons(addons)}
+    ${skip === true ? "" : getUniStringFromAddons(addons, fullResults)}
     `;
 }
-
+/**
+ *
+ * @param {Addons for the query} addons
+ * @param {placeholder not used} id
+ * @param {Used to skip execution } skip
+ * @param {Toggles whether full results or section scores are returned} fullResults
+ */
 function intQueryString(addons, id, skip, fullResults) {
   return fullResults
     ? `
@@ -208,16 +262,22 @@ function intQueryString(addons, id, skip, fullResults) {
     international_students
     international_staff
     section_score
-    ${skip === true ? "" : getUniStringFromAddons(addons)}
+    ${skip === true ? "" : getUniStringFromAddons(addons, fullResults)}
   `
     : `
   university_id
   section_score
   year
-  ${skip === true ? "" : getUniStringFromAddons(addons)}
+  ${skip === true ? "" : getUniStringFromAddons(addons, fullResults)}
 `;
 }
-
+/**
+ *
+ * @param {Category being queried} path
+ * @param {Additional categoreis to be queried with the main query} addons
+ * @param {ID if a specific object is queried} id
+ * @param {{Toggles whether full results or section scores are returned} fullResults
+ */
 function buildQueryString(path, addons, id, fullResults) {
   return `query { get${path}${searchString(id)}{${combineQueryString(
     path,
@@ -226,7 +286,13 @@ function buildQueryString(path, addons, id, fullResults) {
     fullResults
   )}}}`;
 }
-
+/**
+ *
+ * @param {Category being queried} path
+ * @param {Additional categoreis to be queried with the main query} addons
+ * @param {ID if a specific object is queried} id
+ * @param {{Toggles whether full results or section scores are returned} fullResults
+ */
 function combineQueryString(path, addons, id, fullResults) {
   switch (path) {
     case "Universities":

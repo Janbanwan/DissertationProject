@@ -25,14 +25,29 @@ const InnerContainer = styled.div`
 const ContainerLeft = styled.div``;
 
 const ContainerRight = styled.div``;
-
+/**
+ * Displays the left side of the home page.
+ * Users defined and execute queries on this page
+ */
 export default class QueryView extends React.Component {
   state = {
     result: [],
     queryChoice: "REST",
+    perform: [],
   };
 
   render() {
+    /**
+     *
+     * Function handles the communication between the data retrieval functions and the UI components
+     *
+     * @param {REST / GRAPHQL} queryMode
+     * @param {Name of the operation} value
+     * @param {ID of the object queried if specified (Optional)} id
+     * @param {The category being queried} path
+     * @param {An array containing the sub categories that are retrieved with the parent object} addons
+     * @param {Boolean, toggles wheter full results or section scores are retrieved} fullResults
+     */
     const getQuery = async (
       queryMode,
       value,
@@ -41,6 +56,7 @@ export default class QueryView extends React.Component {
       addons,
       fullResults
     ) => {
+      let start = performance.now();
       const result = await switchQuery(
         queryMode,
         value,
@@ -50,6 +66,15 @@ export default class QueryView extends React.Component {
         fullResults
       );
       this.setState({ result });
+      let end = performance.now();
+
+      console.log(
+        "Executing query in " + queryMode + ". Process time: " + (end - start)
+      );
+      this.setState((state) => {
+        state.perform.push(end - start);
+      });
+      console.log(this.state.perform);
     };
 
     return (
